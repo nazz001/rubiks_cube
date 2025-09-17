@@ -1,4 +1,4 @@
-=# Rubik’s Cube Solver
+# Rubik’s Cube Solver
 
 An educational/experimental Rubik’s Cube solver in **C++ (C++14)** with multiple cube representations, several search algorithms, and a pattern-database (PDB) pipeline for heuristic search. Includes a corner PDB implementation.
 
@@ -90,16 +90,7 @@ You can switch implementations by constructing a different `RubiksCube` derived 
 
 ## Benchmarking guide
 
-To produce defensible benchmark numbers:
-
-1. Build in **Release**:
-
-   ```bash
-   cmake .. -DCMAKE_BUILD_TYPE=Release
-   cmake --build . -- -j$(nproc)
-   ```
-
-2. Add/enable a benchmark mode (if not present): create a harness that:
+Add/enable a benchmark mode (if not present): create a harness that:
 
    * Generates `N` random scrambles of fixed length `L` (e.g., 8 or 13).
    * Runs the chosen solver on each scramble.
@@ -110,38 +101,17 @@ To produce defensible benchmark numbers:
      * nodes expanded / pruned (add counters in solver)
      * PDB load time and size (if using PDBs)
 
-3. Example run (adapt flags to your CLI):
+Example run (adapt flags to your CLI):
 
    ```bash
    ./rubiks_cube_solver --benchmark --solver ida --rep bitboard --scramble-length 13 --trials 50
    ```
 
-4. Record environment details in `BENCHMARK.md`:
-
-   * CPU model, core count, RAM, OS, compiler + flags.
-   * Report medians and percentiles (e.g., median, 95th).
-   * For PDB builds, report build time and disk size (bytes).
-
-**Tips**
 
 * Use `std::chrono::high_resolution_clock` for timing.
 * Run experiments multiple times and report median/95th percentile.
 * Add counters in hot paths (nodes expanded, prunes, peak frontier).
 
----
-
-## Developing / Testing
-
-* Add a `Metrics` struct (nodes expanded, prunes, peak frontier) and increment counters in solver hot paths for instrumentation.
-* Unit tests to add:
-
-  * Move legality (apply move then inverse returns solved)
-  * Orientation & permutation invariants
-  * PDB correctness on a few sample indices
-* Consider adding `scripts/run_bench.sh` to standardize benchmarks and a `BENCHMARK.md` for recorded results.
-* Use CI (e.g., GitHub Actions) to build and run smoke tests on push.
-
----
 
 
 
